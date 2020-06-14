@@ -1,0 +1,162 @@
+{% load static %}
+<!doctype html>
+<html>
+<head>
+    <title>GPS tracker</title>
+    <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.19.0.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <style>
+        body, html {
+  height: 100%;
+}
+.bg {
+  filter: blur(1px);
+  -webkit-filter: blur(1px);
+  height: 100%;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.bg-others {
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0, 0.4);
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  border: 3px solid #f1f1f1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 2;
+  width: 80%;
+  padding: 20px;
+  transform: translate(-50%, -50%);
+}
+.hr1{
+   color: white;
+}
+#map-canvas{
+    width:720px;
+    height:400px;
+    border: 6px solid #056af7;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+    </style>
+</head>
+<body background="{% static 'BoatifyApp/images/abc12.jpg'%}">
+<a class="navbar-brand" href="{% url 'homepage' %}"><h3><span style="color:#4caf50">&nbsp;&nbsp;BOATIFY</span></h3></a>
+<div class="bg"></div>
+<div class="bg-others">
+    <div class="container">
+        <h3>Choose the Boat to track</h3>
+        <select id="boats" name="boats">
+            <option value="Boat 1">Boat 1 (Thavanakadav-Vaikom)</option>
+            <option value="Boat 2">Boat 2 (Vaikom - Thavanakadav)</option>
+            <option value="Boat 3">Boat 3 (Vaikom - Ernakulam)</option>
+        </select>
+        </br></br>
+        <!--
+        <p>by SPARKLERS: We Are The Makers</p>-->
+
+        <center>
+            <button class="btn btn-success col-sm-3" id="action">Start Tracking</button>
+        </center>
+        <br>
+        <center>
+            <div id="map-canvas"></div>
+        </center>
+    </div>
+</div>
+
+<script>
+    window.lat = 9.742380;
+    window.lng = 76.369240;
+
+    var map;
+    var mark;
+    var lineCoords = [];
+
+    var initialize = function() {
+      map  = new google.maps.Map(document.getElementById('map-canvas'), {center:{lat:lat,lng:lng},zoom:14});
+      mark = new google.maps.Marker({position:{lat:lat, lng:lng}, map:map});
+    };
+
+    window.initialize = initialize;
+
+    var redraw = function(payload) {
+      if(payload.message.lat){
+      lat = payload.message.lat;
+      lng = payload.message.lng;
+
+      map.setCenter({lat:lat, lng:lng, alt:0});
+      mark.setPosition({lat:lat, lng:lng, alt:0});
+
+      lineCoords.push(new google.maps.LatLng(lat, lng));
+
+      var lineCoordinatesPath = new google.maps.Polyline({
+        path: lineCoords,
+        geodesic: true,
+        strokeColor: '#ff1010'
+      });
+
+      lineCoordinatesPath.setMap(map);}
+    };
+
+    var pnChannel = "raspi-tracker";
+
+    var pubnub = new PubNub({
+      publishKey:   'pub-c-f2807d4e-f185-411e-8e70-f26adb444e95',
+      subscribeKey: 'sub-c-5a4107d2-6b33-11ea-be06-76a98e4db888'
+    });
+
+    document.querySelector('#action').addEventListener('click', function(){
+        var text = document.getElementById("action").textContent;
+        if(text == "Start Tracking"){
+            pubnub.subscribe({channels: [pnChannel]});
+            pubnub.addListener({message:redraw});
+            document.getElementById("action").classList.add('btn-danger');
+            document.getElementById("action").classList.remove('btn-success');
+            document.getElementById("action").textContent = 'Stop Tracking';
+        }
+        else{
+            pubnub.unsubscribe( {channels: [pnChannel] });
+            document.getElementById("action").classList.remove('btn-danger');
+            document.getElementById("action").classList.add('btn-success');
+            document.getElementById("action").textContent = 'Start Tracking';
+        }
+        });
+
+
+
+</script>
+
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyDbN5x_NMhm-0NneVHg0tWY6yRLxW0yb5w&callback=initialize"></script>
+
+<script>
+function newPoint(time) {
+      var radius = 0.0001;
+      var x = Math.random() * radius;
+      var y = Math.random() * radius;
+      return {lat:window.lat + y, lng:window.lng + x};
+        }
+
+      setInterval(function() {
+      pubnub.publish({channel:pnChannel, message:newPoint()});
+      }, 2000);
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

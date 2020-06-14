@@ -1,0 +1,182 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign up</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'BoatifyApp/css/login.css'%}">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:600&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a81368914c.js"></script>
+    <style>
+    .dark-mode {
+    background-color: black;
+    color: white;
+    }
+
+    .switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #32be8f;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #32be8f;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+    </style>
+
+</head>
+<body>
+
+<img class="wave" src="{% static 'BoatifyApp/images/wave.png'%}">
+<a class="navbar-brand" href="{% url 'homepage' %}"><h3>
+    <span>B</span>
+    <span>O</span>
+    <span>A</span>
+    <span>T</span>
+    <span>I</span>
+    <span>F</span>
+    <span>Y</span>
+    <span>&nbsp;</span>
+</h3></a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label class="switch">
+    <input type="checkbox" onclick="myFunction()">
+    <span class="slider round"></span>
+</label>
+<div class="container">
+
+    <div class="img">
+        <img src="{% static 'BoatifyApp/images/bg.svg'%}">
+    </div>
+
+    <div class="login-content">
+
+        <form action="{% url 'register' %}" method="post">
+            {% csrf_token %}
+
+            <h3 class="title">SIGN UP</h3>
+            <a href="{% url 'login' %}">Click here to Login</a>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fa fa-venus" aria-hidden="true"></i>
+                </div>
+                <div class="div">
+                    <h5>Name</h5>
+
+
+                    <input type="text" name="name1" class="input" required>
+                </div>
+            </div>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+
+                </div>
+                <div class="div">
+                    <h5>UserName</h5>
+
+
+                    <input type="text" name="uname" class="input" required>
+                </div>
+            </div>
+            <div class="input-div one">
+                <div class="i">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                </div>
+                <div class="div">
+                    <h5>Email</h5>
+
+
+                    <input type="text" name="emailr" class="input" required>
+                </div>
+            </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Password</h5>
+
+                    <input type="password" name="pwr1" class="input" required>
+                </div>
+            </div>
+            <div class="input-div pass">
+                <div class="i">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <div class="div">
+                    <h5>Password</h5>
+
+                    <input type="password" name="pwr2" class="input" required>
+                </div>
+            </div>
+            <!--<a href="#">Forgot Password?</a>-->
+            <input type="submit" class="btn" value="Register">
+
+        </form>
+        <div>
+            {% for message in messages %}
+            <h3 style="color:yellow"> {{message}} </h3>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<script>
+function myFunction() {
+   var element = document.body;
+   element.classList.toggle("dark-mode");
+}
+
+
+</script>
+<script type="text/javascript" src="{% static 'BoatifyApp/js/main.js'%}"></script>
+</body>
+</html>

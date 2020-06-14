@@ -1,0 +1,31 @@
+{% extends 'payment/header.html' %}
+{% load static %}
+{% block con %}
+<link rel="stylesheet" type="text/css" href="{% static 'payment/css/paymenthome.css'%}">
+{% endblock %}
+{% block content %}
+
+<div class="box" align="center">
+    <img id="succes-icon" src="{% static 'payment/images/check.png' %}" width="100" height="100">
+    <h4 style="color:yellow">The payment of Rs. {{print.Amount}} was successful</h4>
+    <form method="post" action="{% url 'qrcode' %}">
+        {% csrf_token %}
+			<input type="hidden" name="name" value={{print.Name}}>
+			<input type="hidden" name="fboatid" value={{print.Boatid}}>
+            <input type="hidden" name="ffr" value={{print.From}}>
+            <input type="hidden" name="fto" value={{print.To}}>
+            <input type="hidden" name="ftime" value={{print.Time}}>
+            <input type="hidden" name="fdate" value={{print.Date}}>
+            <input type="hidden" name="fseats" value={{print.Seats}}>
+            <input type="hidden" name="ffare" value={{print.Fare}}>
+        <input type="submit" value="View Ticket">
+    </form>
+
+
+    <div>
+
+
+    </div>
+
+</div>
+{% endblock %}

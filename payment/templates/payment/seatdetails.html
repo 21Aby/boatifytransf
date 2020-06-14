@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Seat Details</title>
+</head>
+<body>
+<div align="center">
+
+    <h1 style="color:red">Reserved Seats</h1>
+
+    {{print.Seats}}
+
+    <form method="post" action="{% url 'payment' %}">
+        {% csrf_token %}
+
+        <input type="hidden" name="fboatid" value={{print.Boatid}}>
+        <input type="hidden" name="ffr" value={{print.From}}>
+        <input type="hidden" name="fto" value={{print.To}}>
+        <input type="hidden" name="ftime" value={{print.Time}}>
+        <input type="hidden" name="fdate" value={{print.Date}}>
+        <input type="hidden" name="fseats" value={{print.Seats}}>
+        <input type="hidden" name="ffare" value={{print.Fare}}>
+        </br></br>
+        <input type="submit" value="Click to PAY">
+    </form>
+
+</div>
+</body>
+</html>

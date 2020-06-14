@@ -1,0 +1,119 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        .card {
+  background: #fff;
+  border-radius: 2px;
+  display: inline-block;
+  height: 430px;
+  margin: 1rem;
+  position: relative;
+  width: 550px;
+}
+.card-5 {
+  box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+.card-5:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.40), 0 10px 10px rgba(0,0,0,0.30);
+}
+
+
+
+    </style>
+    <title>Qrcode</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <script src="https://files.codepedia.info/files/uploads/iScripts/html2canvas.js"></script>
+</head>
+<body background="{% static 'payment/images/wave.png'%}">
+<a style="text-decoration: none" class="navbar-brand" href="{% url 'homepage' %}">
+    <h3>
+        <h3 style="font-family: Helvetica">&nbsp;&nbsp;<span style="font-size:20px">Back to</span> BOATIFY</h3>
+    </h3>
+</a>
+
+<div align="center">
+    <div id="html-content-holder" class="card card-5">
+
+
+        <h1>BOATIFY</h1>
+        <h3>Name: {{b.Name}}</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h4>Date: {{b.Date}}</h4>
+                    <h4>BoatID: {{b.Boatid}}</h4>
+                    <h4>From: {{b.From}}</h4>
+                </div>
+                <div class="col">
+                    <h4>Time: {{b.Time}}</h4>
+                    <h4>Seats: {{b.Seats}}</h4>
+                    <h4>To: {{b.To}}</h4>
+                </div>
+            </div>
+        </div>
+
+
+        <h3></h3>
+        <!--<a href="{% static 'payment/images/qrcode_ticket.svg'%}" download="ticket_qrcode">-->
+        <img src="{% static 'payment/images/qrcode_ticket.svg'%}" height="180" width="180">
+        </a>
+
+    </div>
+</div>
+
+
+<div align="center">
+    <input id="btn-Preview-Image" type="checkbox" value="Download"/>&nbsp;&nbsp;I`m not a Robot
+    <a href="#" id="btn-Convert-Html2Image"><h2>Download Ticket</h2></a>
+
+</div>
+
+<!--<h3>Preview :</h3>
+<div id="previewImage">
+</div>-->
+
+
+<script>
+$(document).ready(function(){
+
+
+var element = $("#html-content-holder"); // global variable
+var getCanvas; // global variable
+
+    $("#btn-Preview-Image").on('click', function () {
+         html2canvas(element, {
+         onrendered: function (canvas) {
+                $("#previewImage").append(canvas);
+                getCanvas = canvas;
+             }
+         });
+    });
+
+	$("#btn-Convert-Html2Image").on('click', function () {
+    var imageData = getCanvas.toDataURL("image/png");
+    // Now browser starts downloading it instead of just showing it
+    var newData = imageData.replace(/^data:image\/png/, "data:application/octet-stream");
+    $("#btn-Convert-Html2Image").attr("download", "ticket.png").attr("href", newData);
+	});
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

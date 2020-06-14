@@ -1,0 +1,98 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+
+    {% block cont %}
+
+    {% endblock %}
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <title>Boatify</title>
+    <style>
+        #bg{
+  background: url(https://images.wallpaperscraft.com/image/ocean_aerial_view_water_131753_1920x1080.jpg);
+  background-repeat: repeat;
+  background-size: 1400px 720px;
+}
+    </style>
+
+</head>
+<body id="bg">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{% url 'homepage' %}"><img src="{% static 'BoatifyApp/images/boaticon.png'%}"
+                                                                 style="width:40px;height:40px;"></a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'homepage' %}">Home <span class="sr-only">(current)</span></a>
+                </li>
+
+                <!--''pythoncodabov<li class="nav-item">
+                    <a class="nav-link" href="{% url 'payment' %}">Pay<span class="sr-only">(current)</span></a>
+                </li>
+                """pythoncodhr..ls""""
+                <li class="nav-item">
+
+                    <a class="nav-link" href="{% url 'login' %}"
+                       target="_blank"
+                       onclick="window.open('{% url 'login' %}','popup','width=400,height=400'); return false;">
+                        Pay
+                        <span class="sr-only">(current)</span>
+                    </a>
+
+                    <a class="nav-link" href="{% url 'login' %}">Pay<span class="sr-only">(current)</span></a>
+
+                </li>''''pythoncodblow-->
+
+
+                {% if user.is_authenticated %}
+                <li style="color:#32be8f"> &nbsp;&nbsp;&nbsp; Hello, {{user.first_name}} &nbsp;&nbsp;&nbsp;</li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact Us</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</nav>
+
+{% block content %}
+{% endblock %}
+
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+</html>
+

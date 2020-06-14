@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS</title>
+</head>
+<body>
+
+Sum : <p id="p"></p>
+<button onclick="x.print()">Click to show</button>
+<button onclick="document.getElementById('p').style.display='none'">Click to hide</button>
+<script>
+var x = {
+    name: "Aby",
+    age : 23,
+    place : "Ernakulam",
+    print : function(){
+        alert(this.name);
+        alert(this.age);
+        alert(this.place);
+        }
+};
+</script>
+</body>
+</html>

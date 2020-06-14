@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+    #title{
+  color:#fff;
+  font-weight:100;
+  font-size:28px;
+  padding:10px;
+  border:1px solid #fff;
+  background-color: #55608f;
+}
+
+html,
+body {
+	height: 100%;
+}
+
+body {
+	margin: 0;
+    background: linear-gradient(to right, #71B280, #134E5E); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	font-family: sans-serif;
+	font-weight: 100;
+}
+
+.container {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+table {
+	width: 700px;
+	border-collapse: collapse;
+	overflow: hidden;
+	box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+th,
+td {
+	padding: 15px;
+	background-color: rgba(255,255,255,0.2);
+	color: #fff;
+}
+
+th {
+	text-align: left;
+}
+
+thead {
+	th {
+		background-color: #55608f;
+	}
+}
+
+tbody {
+	tr {
+		&:hover {
+			background-color: rgba(255,255,255,0.3);
+		}
+	}
+	td {
+		position: relative;
+		&:hover {
+			&:before {
+				content: "";
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: -9999px;
+				bottom: -9999px;
+				background-color: rgba(255,255,255,0.2);
+				z-index: -1;
+			}
+		}
+	}
+}
+
+
+    </style>
+
+</head>
+<body>
+<a class="navbar-brand" href="{% url 'homepage' %}" style="text-decoration:none"><h3>&nbsp;&nbsp;&nbsp;B O A T I F Y
+</h3></a>
+
+<h1 align="center" style="color:white">SCHEDULES</h1>
+{% if Schedules %}
+
+
+<div class="container">
+
+    <table id="our-table">
+        <thead>
+        <tr>
+            <th>Boat ID</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Time</th>
+            <th>Fare</th>
+            <th><div align="center"><i class="fas fa-hand-point-right"></i></div></th>
+        </tr>
+        </thead>
+        <tbody id="table-body">
+        {% for d in Schedules %}
+        <tr>
+            <td>{{d.boatid}}</td>
+            <td>{{d.fr}}</td>
+            <td>{{d.to}}</td>
+            <td>{{d.time}}</td>
+            <td>{{d.fare}}</td>
+            <form action="{% url 'seatres' %}" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="fboatid" value={{d.boatid}}>
+                <input type="hidden" name="ffr" value={{d.fr}}>
+                <input type="hidden" name="fto" value={{d.to}}>
+                <input type="hidden" name="ftime" value={{time}}>
+                <input type="hidden" name="fdate" value={{date}}>
+                <input type="hidden" name="ffare" value={{d.fare}}>
+                {% if user.is_authenticated %}
+                <td><input type="submit" name="booknow" value="Book Now"></td>
+                {% else %}
+                <td><a href="{% url 'login' %}">Login to Book </a></td>
+                {% endif %}
+            </form>
+
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<h2 align="center" style="color:red">No services at this time !!!</h2>
+<a align="center" href="{% url 'homepage' %}"><h3>Back to Home
+</h3></a>
+{% endif %}
+<script src="https://kit.fontawesome.com/a81368914c.js"></script>
+</body>
+</html>
